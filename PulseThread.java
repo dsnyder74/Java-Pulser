@@ -1,40 +1,68 @@
 /**
+ * File: PulseThread
  * 
+ * @author David
+ *
  */
+
 package dgs.StepCounter.v1;
 
 
 /**
+ * PulseThread contains the code that actually runs in the slave thread.
+ * 
  * @author David
- *
  */
 public class PulseThread implements Runnable {
 
-	/* (non-Javadoc)
-	 * @see java.lang.Runnable#run()
+	// 
+	/**
+	 * Custom dialog control to update at each pulse.  Has set.
 	 */
-	
-	// Pulse thread.
-	private Thread myThread = null;
-	
-	// Indicator to update at each pulse.  Has set.
 	private StepIndicator myIndicator = null;
+	
+	/**
+	 * Sets the pulsing thread to talk to a new indicator.
+	 * 
+	 * @param i		The new indicator.
+	 */
 	public void setIndicator( StepIndicator i ) {
 		myIndicator = i;
 	}
 	
-	// Duration between pulser.  Has get/set.
+	/**
+	 * Duration between pulser.  Has get/set.
+	 */
 	private int iDuration = 0;
+	
+	/**
+	 * Returns the current duration between pulses in milliseconds.
+	 * 
+	 * @return	The current duration between pulses in milliseconds.
+	 */
 	public int getDuration() {
 		return iDuration;
 	}
+	
+	/**
+	 * Sets a new duration in milliseconds between pulses.
+	 * 
+	 * @param millsec	The new duration in milliseconds between pulses.
+	 */
 	public void setDuration( int millsec ) {
 		iDuration = millsec;
 		System.out.println("Duration set to "+iDuration);
 	}
 	
-	// Internal pulse counter.  Has get.
+	/**
+	 * An internal pulse counter.  Has get.
+	 */
 	private int iCounter=0;
+	/**
+	 * Returns the current pulse count.
+	 * 
+	 * @return
+	 */
 	public int getCounter() {
 		return iCounter;
 	}
