@@ -86,12 +86,6 @@ public class PulseThread implements Runnable {
 	}
 	
 	/**
-	 * Flag to indicate if this is the first time this object has ran in this
-	 * thread
-	 */
-	private Boolean bFirstRun = new Boolean(true);
-	
-	/**
 	 * Internal flag to indicate that the pulser thread needs to terminate.
 	 */
 	private Boolean bStopNow = new Boolean(false);
