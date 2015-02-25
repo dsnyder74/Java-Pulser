@@ -27,18 +27,21 @@ public class MainProgramLoop {
 		
         System.out.println("Starting Main Thread...");
         
-        // Create new Pulse Controller object, and set the duration between
-        // pulses to 800 ms.
+        /* Create new Pulse Controller object, and set the duration between
+         * pulses to the default duration.
+         */
         PulseControl myPulseController = new PulseControl( MainProgramLoop.DEFAULT_DURATION );
         
-        // Create the main app window.  Pass the controller object so the main
-        // app window can control the pulses.
+        /* Create the main app window.  Pass the controller object so the main
+         * app window can control the pulses.
+         */
         StepGUI mainWindow = new StepGUI( myPulseController );
         
         // Visible please.
         mainWindow.setVisible(true);
         
+        // The main app window is modal. So the main thread here is done.
         System.out.println("End of Main Thread...");
 	}
 
-}
+}  //  end class MainProgramLoop

@@ -20,11 +20,9 @@ public class PulseControl {
 	 * each time there is a pulse.  Has set.
 	 */
 	private StepIndicator myIndicator = null;
-	
 	/**
-	 * Sets the custom dialog control for this object.
 	 * 
-	 * @param si	The custom dialog control.
+	 * @param si
 	 */
 	public void setIndicator( StepIndicator si ) {
 		myIndicator = si;
@@ -33,8 +31,7 @@ public class PulseControl {
 	/**
 	 * pulseThreadObject is the object that contains the pulser code that 
 	 * will run in a separate thread.
-	 */
-	// 
+	 */ 
 	private PulseThread pulseThreadObject = null;
 	
 	/**
@@ -46,18 +43,14 @@ public class PulseControl {
 	 * Duration between pulses.  Has get/set.
 	 */
 	private int iDuration = 0;
-	
 	/**
-	 * Returns the current duration between pulses in milliseconds.
 	 * 
 	 * @return	The current duration between pulses in milliseconds.
 	 */
 	public int getDuration() {
 		return iDuration;
 	}
-	
 	/**
-	 * Sets the duration between pulses in milliseconds.
 	 * 
 	 * @param millsec	The new duration between pulses in milliseconds.
 	 */
@@ -107,8 +100,8 @@ public class PulseControl {
 	}
 
 	/**
-	 * Start pulsing.  If there is no slave thread for the pulser, create a 
-	 * new one.
+	 * Start pulsing by telling the slave PulseThread object to Start.  
+	 * If there is no slave thread for the pulser, create a new one.
 	 */
 	public void Start() {
 		
@@ -121,7 +114,7 @@ public class PulseControl {
 			System.out.println("Creating new PulseThread thread.");
 			pulseThreadObject = new PulseThread( myIndicator, iDuration );
 			
-			// Create a new thread for the object.
+			// Create a new thread for executing the pulse thread object.
 			System.out.println("Creating new thread.");
 			pulseThread = new Thread( pulseThreadObject );
 			
@@ -169,4 +162,4 @@ public class PulseControl {
 		
 	}  //  end method Stop
 
-}
+}  //  end class PulseControl
