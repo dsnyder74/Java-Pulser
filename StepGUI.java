@@ -8,10 +8,8 @@
 package dgs.StepCounter.v1;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,6 +44,7 @@ public class StepGUI extends JFrame {
 	 * @param pc	the PulseControl object that controls the pulser.
 	 */
 	public StepGUI( PulseControl pc ) {
+		setTitle("Pulser");
 		
 		System.out.println("StepGUI constructor called.");
 		
@@ -62,7 +61,7 @@ public class StepGUI extends JFrame {
 		
 		// Main frame
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 350, 200);
+		setBounds(100, 100, 350, 160);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -80,11 +79,6 @@ public class StepGUI extends JFrame {
 		StepIndicator indicator = new StepIndicator();
 		myPulseController.setIndicator(indicator);
 		indicatorPanel.add(indicator);
-		
-		JLabel lblStepMessage = new JLabel("Step Message");
-		int retainHeight = lblStepMessage.getPreferredSize().height;
-		lblStepMessage.setPreferredSize(new Dimension(250, retainHeight));
-		indicatorPanel.add(lblStepMessage);
 		
 		// Set up the Control panel
 		JLabel lblDuration = new JLabel("Duration:");
@@ -117,6 +111,7 @@ public class StepGUI extends JFrame {
 				// If the button says start, tell the pulse controller to 
 				// start and make the button a pause button.
 				if ((btnStart.getText() == "Start") || (btnStart.getText() == "Resume")) {
+					indicator.resetSteps();
 					myPulseController.Start();
 					btnStart.setText("Pause");
 				} else {
@@ -126,7 +121,7 @@ public class StepGUI extends JFrame {
 			}
 		} );	
 		controlPanel.add(btnStart);
-		
+
 	}
 
 }

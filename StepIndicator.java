@@ -13,17 +13,27 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 /**
  * StepIndicator is a customized spring control, extended off of a JPanel.
  * It's specifications are:
- *    - Draw as a small rectangle
- *    - Fill the rectangle with the off color
- *    - When told so by a public method, fill the rectangle with the 'on' 
- *      color, wait for a small period of time, then fill the rectangle 
+ *    - Load a queue of text messages
+ *    - Draw as a small rectangle in the upper half on the JPanel
+ *    - Fill that rectangle with the off color
+ *    - When told so by a public method, fill the top rectangle with the 'on' 
+ *      color, set the bottom label to the next text message in the queue,
+ *      wait for a small period of time, then fill the top rectangle 
  *      with the 'off' color.  This results in the rectangle appearing to 
  *      'flash' or 'pulse'.
  *      
@@ -61,7 +71,7 @@ public class StepIndicator extends JPanel {
 	/**
 	 * The indicator's default height.
 	 */
-	private static final int DEFAULT_BLINKER_HEIGHT = 20;
+	private static final int DEFAULT_BLINKER_HEIGHT = 60;
 	
 	/**
 	 * The indicator's current color
@@ -97,16 +107,49 @@ public class StepIndicator extends JPanel {
 	}
 	/**
 	 * 
-	 * @param w The new width of the indicatorm without changing the height.
+	 * @param w The new width of the indicator without changing the height.
 	 */
 	public void setIndicatorWidth (int w) {
 		indicatorSize.width = w;
 	}
-
+	
+	/**
+	 * The queue of text messages to display under the blinker
+	 */
+	private Queue<String> Steps = new LinkedList<String>();
+	
+	/**
+	 * Reads a text file, and queues each line into Steps
+	 */
+	public void resetSteps() {
+		try {
+			Steps.clear();
+			for (String line : Files.readAllLines(Paths.get("Steps.txt"))) {
+			    Steps.add(line);
+			}
+		} catch (IOException e) {
+			System.out.println("Exception: "+e.getMessage());
+		}
+	}
+	
+	/**
+	 * JLabel to display current text message at front of Steps
+	 */
+	private JLabel current_step;
+	
 	/**
 	 * Generic empty constructor
 	 */
 	public StepIndicator() {
+		setLayout(null);
+		
+		current_step = new JLabel("");
+		current_step.setFont(new Font("Arial", Font.BOLD, 15));
+		current_step.setHorizontalAlignment(SwingConstants.CENTER);
+		current_step.setBounds(10, 37, 220, 23);
+		add(current_step);
+		
+		resetSteps();
 	}
 	
 	/**
@@ -117,7 +160,7 @@ public class StepIndicator extends JPanel {
 		super.paintComponent(g);
 		Rectangle r = this.getBounds();
 		g.setColor(currentColor);
-		g.fillRect(0, 0, r.width, r.height);
+		g.fillRect(0, 0, r.width, r.height/2);
 	}
 	
 	/**
@@ -127,7 +170,7 @@ public class StepIndicator extends JPanel {
 	 * A better solution may be to switch the parent Panel's layout.
 	 */
 	@Override public Dimension getPreferredSize() {
-	    return new Dimension(250, 20); // appropriate size
+	    return indicatorSize; // appropriate size
 	}
 	
 
@@ -135,6 +178,11 @@ public class StepIndicator extends JPanel {
 	 * This function causes the indicator to blink.
 	 */
 	public void NextStep() {
+		
+		// Update Step text
+		String step = Steps.remove();
+		current_step.setText(step);
+		Steps.add(step);
 		
 		// Color blinker on
 		StepIndicator si = this;
